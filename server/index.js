@@ -1,1 +1,1 @@
-require('./irc/index')
+require('./irc/app')
