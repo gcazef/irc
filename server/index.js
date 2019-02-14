@@ -1,1 +1,1 @@
-require('./irc/app')
+require('./src/app')

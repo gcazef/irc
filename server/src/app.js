@@ -8,7 +8,7 @@ var server = app.listen(5000, () => {
 });
 
 // Static files
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // Socket setup
 // Pass the server you want to work with
