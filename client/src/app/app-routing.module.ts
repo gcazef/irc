@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ChatChannelsComponent } from './components/chat-channels/chat-channels.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: ChatChannelsComponent }
+  // { path: '', component: ChatChannelsComponent }
+  // { path: '', component: LoginComponent },
+  { path: '', component: LoginComponent },
+  { path: 'home', component: HomeComponent }
 ];
 
 @NgModule({

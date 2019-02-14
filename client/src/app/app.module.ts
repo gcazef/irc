@@ -9,6 +9,8 @@ import { ChatFeedComponent } from './components/chat-feed/chat-feed.component';
 import { ChatFormComponent } from './components/chat-form/chat-form.component';
 import { ChatMembersComponent } from './components/chat-members/chat-members.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     ChatFeedComponent,
     ChatFormComponent,
     ChatMembersComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
