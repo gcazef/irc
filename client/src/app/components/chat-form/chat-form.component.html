@@ -1,6 +1,8 @@
 <div class="form-inline">
-    <div class="form-group">
+    <div class="input-group">
         <input class="form-control" [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()"/>
+        <div class="input-group-append">
+            <button class="btn btn-primary btn-success" (click)="sendMessage()"><img src="assets/send-button.png" width="20"></button>
+        </div>
     </div>
-    <button class="btn btn-primary ml-2" (click)="sendMessage()">Send</button>
 </div>
