@@ -7,26 +7,29 @@ var server = app.listen(5000, () => {
     console.log("Listening on port 5000");
 });
 
-// Static files
-// app.use(express.static("public"));
-
 // Socket setup
-// Pass the server you want to work with
 var io = socket(server);
+
+// Handlers
+// !!!POSSIBLE TO ADD CALLBACKS
+var join = (channel) => { socket.join(channel); }
+
+var leave = (channel) => { socket.leave(channel); }
+
+var isTyping = (name) => { socket.broadcast.emit("typing", name); }
+
+var msgHandler = (message) => { io.sockets.emit("chat-message", message); }
+
 // Listen to connection event
 io.on("connection", (socket) => {
     console.log("New socket connection:", socket.id);
 
     // Listen to the chat message
-    socket.on("chat-message", (message) => {
-        // All the different sockets connected
-        console.log(message);
-        io.sockets.emit("chat-message", message);
-    });
-
+    socket.on("chat-message", msgHandler);
     // See who is typing
-    socket.on("typing", (data) => {
-        // Emits to every client excepted the one who is typing
-        socket.broadcast.emit("typing", data);
-    });
+    socket.on("typing", isTyping);
+    // User joins rooms
+    socket.on("join", join);
+    // User leaves room
+    socket.on("leave", leave);
 });
