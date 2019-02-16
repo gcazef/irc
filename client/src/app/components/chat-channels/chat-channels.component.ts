@@ -7,12 +7,19 @@ import { ChatService } from 'src/app/services/chat.service';
   styleUrls: ['./chat-channels.component.scss']
 })
 export class ChatChannelsComponent implements OnInit {
-  rooms: string[] = [];
   room: string = "";
+  rooms: string[] = [];
+  joinedRooms: string[] = [];
 
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
+    this.chatService
+      .getRoomEvent()
+      .subscribe((event) => {
+        if (event.type == "new" && !(this.rooms.includes(event.room)))
+          this.rooms.push(event.room);
+      });
   }
 
   createRoom() {
@@ -26,8 +33,11 @@ export class ChatChannelsComponent implements OnInit {
     }
   }
 
-  join(room) {
-    this.room = room;
+  join(room: string) {
     this.chatService.join(room);
+  }
+
+  leave(room: string) {
+    this.chatService.leave(room);
   }
 }

@@ -7,15 +7,24 @@ import { ChatService } from 'src/app/services/chat.service';
   styleUrls: ['./chat-feed.component.scss']
 })
 export class ChatFeedComponent implements OnInit {
-  messages: string[] = [];
+  joinedRooms: string[] = [];
+  messages = [];
+  roomMsg = "";
 
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
     this.chatService
       .getMessages()
-      .subscribe((message: string) => {
-        this.messages.push(message);
+      .subscribe((data) => {
+        this.messages.push(data);
+        this.roomMsg = "";
+      });
+    
+    this.chatService
+      .getRoomEvent()
+      .subscribe((event) => {
+        this.roomMsg = event.message;
       });
   }
 }

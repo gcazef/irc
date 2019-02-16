@@ -12,25 +12,72 @@ var io = socket(server);
 
 // Listen to connection event
 io.on("connection", (socket) => {
+    var joinedRooms = [];
+
     console.log("New socket connection:", socket.id);
 
-    //handlers 
-    var join = (channel) => { socket.join(channel); console.log("joined room", channel); }
+    var sendRoomEvent = (type, room, msg) => {
+        var data = {
+            type: type,
+            room: room,
+            message: msg
+        };
 
-    var leave = (channel) => { socket.leave(channel); }
-
-    var isTyping = (name) => { socket.broadcast.emit("typing", name); }
-
-    var msgHandler = (message) => { io.sockets.emit("chat-message", message); }
+        io.in(room).emit("room-event", data);
+    }
 
     // Listen to the chat message
-    socket.on("chat-message", msgHandler);
+    socket.on("chat-message", (content) => {
+        joinedRooms.forEach((room) => {
+            var date = new Date(Date.now());
+            // Replace by a model
+            var data = {
+                user: socket.id,
+                room: room,
+                date: date.toLocaleString(),
+                content: content
+            }
+            io.in(room).emit("chat-message", data);
+            console.log("emitted");
+        });
+    });
     // See who is typing
-    socket.on("typing", isTyping);
+    socket.on("typing", (name) => {
+        socket.broadcast.emit("typing", name);
+    });
     // User joins rooms
-    socket.on("join", join);
+    socket.on("join", (channel) => {
+        if (!joinedRooms.includes(channel)) {
+            var msg = socket.id + " joined channel " + channel;
+
+            socket.join(channel);
+            joinedRooms.push(channel);
+            sendRoomEvent("join", channel, msg);
+            console.log("joined rooms", joinedRooms);
+        }
+    });
     // User leaves room
-    socket.on("leave", leave);
+    socket.on("leave", (channel) => {
+        var roomIdx = joinedRooms.indexOf(channel);
+
+        if (roomIdx != -1) {
+            var msg = socket.id + " left channel " + channel;
+
+            socket.leave(channel);
+            joinedRooms.splice(roomIdx, 1);
+            sendRoomEvent("leave", channel, msg);
+            console.log("left room", channel);
+        }
+    });
     // User creates room
-    socket.on("create-room", join);
+    socket.on("create-room", (channel) => {
+        console.log("new room");
+        var data = {
+            type: "new",
+            room: channel,
+            message: ""
+        };
+
+        io.emit("room-event", data);
+    });
 });

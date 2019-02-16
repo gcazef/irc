@@ -25,11 +25,23 @@ export class ChatService {
       });
   }
 
+  public getRoomEvent = () => {
+      return Observable.create((observer) => {
+          this.socket.on('room-event', (data) => {
+              observer.next(data);
+          });
+      });
+  }
+
   public createRoom = (room) => {
       this.socket.emit('create-room', room);
   }
 
   public join = (room) => {
     this.socket.emit('join', room);
+  }
+
+  public leave = (room) => {
+    this.socket.emit('leave', room);
   }
 }

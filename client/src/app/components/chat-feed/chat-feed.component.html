@@ -1,3 +1,22 @@
 <div *ngFor="let message of messages">
-  {{message}}
+  <div *ngIf="joinedRooms.includes(message.room)">
+  <div>{{joinedRooms}}</div>
+    <div>
+      <strong>
+      <span id="room">
+        {{message.room}}
+      </span>
+        {{message.user}}
+      </strong>
+      <span id="date">
+        [{{message.date}}]
+      </span>
+    </div>
+    <div>
+      {{message.content}}
+    </div>
+  </div>
+</div>
+<div *ngIf="roomMsg.length > 0" id="event">
+  {{roomMsg}}
 </div>
