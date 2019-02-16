@@ -1,8 +1,16 @@
 var express = require('express');
 var socket = require('socket.io');
+var cors = require('cors');
+var bodyParser = require('body-parser');
+
 
 // App setup
 var app = express();
+app.use(bodyParser.json())
+app.use(cors())
+app.use(
+    bodyParser.urlencoded({ extended: false})
+ )
 var server = app.listen(5000, () => {
     console.log("Listening on port 5000");
 });
@@ -30,3 +38,7 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("typing", data);
     });
 });
+
+var Users = require ('../routes/Users')
+
+app.use('../users', Users)

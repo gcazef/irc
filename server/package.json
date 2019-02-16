@@ -9,7 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.4",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mariadb": "^2.0.3",
+    "sequelize": "^5.0.0-beta.16",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {}
