@@ -1,7 +1,17 @@
 <div class="shadow p-3 mb-5 bg-light rounded row">
   <div class="col-12">
-    <p>
-      Display the channels
-    </p>
+    <div *ngFor="let room of rooms" class="input-group">
+      <div class="input-group-append">
+        <button class="btn btn-primary btn-light" [(ngModel)]="room" (click)="join(room)">{{room}}</button>
+        <button class="btn btn-primary btn-light" (click)="edit(room)"><img src="assets/pencil.png" width="18"></button>
+        <button class="btn btn-primary btn-light" (click)="leave(room)"><img src="assets/leave.png" width="18"></button>
+      </div>
+    </div>
+    <div class="form-inline">
+      <div class="input-group">
+        <input class="form-control" [(ngModel)]="room" (keyup)="$event.keyCode == 13 && createRoom()" placeholder="New Channel">
+        <button class="btn btn-primary btn-light" (click)="createRoom()"><img src="assets/add.png" width="20"></button>
+      </div>
+    </div>
   </div>
 </div>

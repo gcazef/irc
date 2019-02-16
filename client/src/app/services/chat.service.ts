@@ -24,4 +24,12 @@ export class ChatService {
           });
       });
   }
+
+  public createRoom = (room) => {
+      this.socket.emit('create-room', room);
+  }
+
+  public join = (room) => {
+    this.socket.emit('join', room);
+  }
 }
