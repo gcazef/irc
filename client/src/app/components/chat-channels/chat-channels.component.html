@@ -1,17 +1,17 @@
-<div class="shadow p-3 mb-5 bg-light rounded row">
+<div class="shadow p-3 mb-5 rounded row channel-menu">
   <div class="col-12">
     <div *ngFor="let room of rooms" class="input-group">
       <div class="input-group-append">
-        <button class="btn btn-primary btn-light" [(ngModel)]="room" (click)="join(room)">{{room}}</button>
-        <button class="btn btn-primary btn-light" (click)="edit(room)"><img src="assets/pencil.png" width="18"></button>
-        <button class="btn btn-primary btn-light" (click)="leave(room)"><img src="assets/leave.png" width="18"></button>
-        <button class="btn btn-primary btn-light" (click)="delete(room)"><img src="assets/delete.png" width="18"></button>
+        <button class="btn channel-menu" [(ngModel)]="room" (click)="join(room)">{{room}}</button>
+        <button class="btn channel-menu" (click)="edit(room)"><img src="assets/pencil.png" width="18"></button>
+        <button class="btn channel-menu" (click)="leave(room)"><img src="assets/leave.png" width="18"></button>
+        <button class="btn channel-menu" (click)="delete(room)"><img src="assets/delete.png" width="18"></button>
       </div>
     </div>
     <div class="form-inline">
       <div class="input-group">
         <input class="form-control" [(ngModel)]="room" (keyup)="$event.keyCode == 13 && createRoom()" placeholder="New Channel">
-        <button class="btn btn-primary btn-light" (click)="createRoom(room)"><img src="assets/add.png" width="20"></button>
+        <button class="btn channel-menu" (click)="createRoom(room)"><img src="assets/add.png" width="20"></button>
       </div>
     </div>
   </div>
