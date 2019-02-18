@@ -13,7 +13,11 @@ export class ChatService {
       this.socket = io(this.url);
   }
 
-  public sendMessage(message) {
+  public changeName(name) {
+      this.socket.emit("change-uname", name);
+  }
+
+  public sendMessage(message, room) {
       this.socket.emit('chat-message', message);
   }
 

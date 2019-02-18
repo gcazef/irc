@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
+import { RoomService } from 'src/app/services/room.service';
 
 @Component({
   selector: 'app-chat-feed',
@@ -7,11 +8,14 @@ import { ChatService } from 'src/app/services/chat.service';
   styleUrls: ['./chat-feed.component.scss']
 })
 export class ChatFeedComponent implements OnInit {
-  joinedRooms: string[] = [];
   messages = [];
   roomMsg = "";
+  room = "";
 
-  constructor(private chatService: ChatService) { }
+  constructor(
+    private chatService: ChatService,
+    private roomService: RoomService
+  ) { }
 
   ngOnInit() {
     this.chatService
@@ -26,5 +30,13 @@ export class ChatFeedComponent implements OnInit {
       .subscribe((event) => {
         this.roomMsg = event.message;
       });
+
+    this.roomService
+      .roomChange
+      .subscribe((room) => {
+        this.room = room;
+        //get messages from chat service
+      });
+
   }
 }

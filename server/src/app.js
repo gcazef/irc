@@ -13,6 +13,7 @@ var io = socket(server);
 // Listen to connection event
 io.on("connection", (socket) => {
     var joinedRooms = [];
+    var uname = "";
 
     console.log("New socket connection:", socket.id);
 
@@ -26,13 +27,17 @@ io.on("connection", (socket) => {
         io.in(room).emit("room-event", data);
     }
 
+    socket.on("change-uname", (name) => {
+        this.name = name;
+    });
+
     // Listen to the chat message
     socket.on("chat-message", (content) => {
         joinedRooms.forEach((room) => {
             var date = new Date(Date.now());
             // Replace by a model
             var data = {
-                user: socket.id,
+                user: this.name,
                 room: room,
                 date: date.toLocaleString(),
                 content: content
