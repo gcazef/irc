@@ -28,23 +28,20 @@ io.on("connection", (socket) => {
     }
 
     socket.on("change-uname", (name) => {
-        this.name = name;
+        uname = name;
     });
 
     // Listen to the chat message
-    socket.on("chat-message", (content) => {
-        joinedRooms.forEach((room) => {
-            var date = new Date(Date.now());
-            // Replace by a model
-            var data = {
-                user: this.name,
-                room: room,
-                date: date.toLocaleString(),
-                content: content
-            }
-            io.in(room).emit("chat-message", data);
-            console.log("emitted");
-        });
+    socket.on("chat-message", (content, room) => {
+        var date = new Date(Date.now());
+        var data = {
+            user: uname,
+            room: room,
+            date: date.toLocaleString(),
+            content: content
+        }
+        io.in(room).emit("chat-message", data);
+        console.log("emitted");
     });
     // See who is typing
     socket.on("typing", (name) => {
@@ -53,7 +50,7 @@ io.on("connection", (socket) => {
     // User joins rooms
     socket.on("join", (channel) => {
         if (!joinedRooms.includes(channel)) {
-            var msg = socket.id + " joined channel " + channel;
+            var msg = uname + " joined channel " + channel;
 
             socket.join(channel);
             joinedRooms.push(channel);
@@ -66,7 +63,7 @@ io.on("connection", (socket) => {
         var roomIdx = joinedRooms.indexOf(channel);
 
         if (roomIdx != -1) {
-            var msg = socket.id + " left channel " + channel;
+            var msg = uname + " left channel " + channel;
 
             socket.leave(channel);
             joinedRooms.splice(roomIdx, 1);

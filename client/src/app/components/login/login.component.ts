@@ -18,9 +18,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-
-  redirect(name: string) {
-    this.chatService.changeName(name);
+  redirect() {
+    this.chatService.changeName(this.name);
     this.router.navigate(['./home']);
   }
 }

@@ -21,8 +21,10 @@ export class ChatFeedComponent implements OnInit {
     this.chatService
       .getMessages()
       .subscribe((data) => {
-        this.messages.push(data);
-        this.roomMsg = "";
+        if (data.room == this.room) {
+          this.messages.push(data);
+          this.roomMsg = "";
+        }
       });
     
     this.chatService
@@ -35,6 +37,7 @@ export class ChatFeedComponent implements OnInit {
       .roomChange
       .subscribe((room) => {
         this.room = room;
+        this.messages = [];
         //get messages from chat service
       });
 
