@@ -16,13 +16,6 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  credentials: TokenPayload = {
-    id: 0,
-    nickname: '',
-    login: '',
-    password: ''
-  }
-
   constructor(private auth: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
