@@ -10,9 +10,9 @@ const sequelize = new Sequelize("nodejs_login", "root", "password", {
         acquire: 30000,
         idle: 10000
     }
-})
+});
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = db
+module.exports = db;

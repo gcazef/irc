@@ -1,8 +1,8 @@
-const Sequelize = require('sequelize')
-const db = require('../database/db.js')
+const Sequelize = require("sequelize");
+const db = require("../database/db.js");
 
 module.exports = db.sequelize.define(
-    'user',
+    "user",
     {
         id: {
             type: Sequelize.INTEGER,
@@ -22,4 +22,4 @@ module.exports = db.sequelize.define(
     {
         timestamps: false
     }
-)
+);
