@@ -1,11 +1,34 @@
+#main-nav, #main-container {
+    background-color: #f4f3f3;
+}
+
+#main-nav {
+    height: 8%;
+}
+
+#main-container {
+    height: 92%;
+}
+
+h1 {
+    color: #494949;
+}
+
 #chat-feed {
-    height: 95%;
+    background-color: #ece8d9;
+    border: 1px solid #E7E6E6;
+    border-radius: 4px;
+    height: 92%;
+    margin: 0% 1% 0% 1%;
+    padding: 1%;
 }
 
 #chat-form {
     height: 5%;
+    margin: 1%;
+    width: 100%;
 }
 
-#main-row {
-    height: 90vh;
+.full-height {
+    height: 100%;
 }

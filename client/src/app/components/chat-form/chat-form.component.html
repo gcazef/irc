@@ -1,8 +1,8 @@
 <div class="form-inline">
-    <div class="input-group">
+    <div class="input-group chat-form">
         <input class="form-control" [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()"/>
         <div class="input-group-append">
-            <button class="btn btn-primary btn-success" (click)="sendMessage()"><img src="assets/send-button.png" width="20"></button>
+            <button class="btn" id="send-button" (click)="sendMessage()"><img src="assets/send-button.png" width="20"></button>
         </div>
     </div>
 </div>

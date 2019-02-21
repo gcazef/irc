@@ -1,3 +1,18 @@
 <div *ngFor="let message of messages">
-  {{message}}
+  <div>
+    <span class="msg">
+      <strong>
+        {{message.user}}
+      </strong>
+    </span>
+    <span id="date">
+      [{{message.date}}]
+    </span>
+  </div>
+  <div class="msg">
+    {{message.content}}
+  </div>
+</div>
+<div *ngIf="roomMsg.length > 0" id="event">
+  {{roomMsg}}
 </div>

@@ -1,7 +1,24 @@
-<div class="shadow p-3 mb-5 bg-white rounded row">
+<div class="shadow mb-0 rounded row channel-menu">
   <div class="col-12">
-    <p>
-      Display the channels
-    </p>
+    <div class="form-inline">
+      <div class="input-group m-3">
+        <input class="form-control" [(ngModel)]="room" (keyup)="$event.keyCode == 13 && createRoom()" placeholder="New Channel">
+        <button class="btn channel-menu" (click)="createRoom(room)"><img src="assets/add.png" width="20"></button>
+      </div>
+    </div>
+    <div *ngFor="let room of rooms" class="input-group m-1">
+      <div class="input-group-append igroup">
+        <div *ngIf="joinedRooms.includes(room)">
+          <img src="assets/green-dot.png" class="co-dot">
+        </div>
+        <div *ngIf="!joinedRooms.includes(room)">
+          <img src="assets/red-dot.png" class="co-dot">
+        </div>
+        <button class="btn channel-menu" [(ngModel)]="room" (click)="join(room)">{{room}}</button>
+        <button class="btn channel-menu" (click)="edit(room)"><img src="assets/pencil.png" class="channel-button"></button>
+        <button class="btn channel-menu" (click)="leave(room)"><img src="assets/leave.png" class="channel-button"></button>
+        <button class="btn channel-menu" (click)="delete(room)"><img src="assets/delete.png" class="channel-button"></button>
+      </div>
+    </div>
   </div>
 </div>
