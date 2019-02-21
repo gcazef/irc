@@ -1,13 +1,15 @@
 <div *ngFor="let message of messages">
   <div>
-    <strong>
-      {{message.user}}
-    </strong>
+    <span class="msg">
+      <strong>
+        {{message.user}}
+      </strong>
+    </span>
     <span id="date">
       [{{message.date}}]
     </span>
   </div>
-  <div>
+  <div class="msg">
     {{message.content}}
   </div>
 </div>
