@@ -12,10 +12,6 @@ var io = socket(server);
 
 // Listen to connection event
 io.on("connection", (socket) => {
-    module.exports = {
-        io: io,
-        socket: socket
-    };
     var joinedRooms = [];
     var uname = "";
 
@@ -27,7 +23,6 @@ io.on("connection", (socket) => {
             room: room,
             message: msg
         };
-
         io.in(room).emit("room-event", data);
     };
 
