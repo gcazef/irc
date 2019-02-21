@@ -10,7 +10,7 @@ export class ChatService {
   private socket;
 
   constructor() {
-      this.socket = io(this.url);
+    this.socket = io(this.url);
   }
 
   public changeName(name: string) {
@@ -18,27 +18,27 @@ export class ChatService {
   }
 
   public sendMessage(message, room) {
-      this.socket.emit('chat-message', message, room);
+    this.socket.emit('chat-message', message, room);
   }
 
   public getMessages = () => {
-      return Observable.create((observer) => {
-          this.socket.on('chat-message', (message) => {
-              observer.next(message);
-          });
+    return Observable.create((observer) => {
+      this.socket.on('chat-message', (message) => {
+        observer.next(message);
       });
+    });
   }
 
   public getRoomEvent = () => {
-      return Observable.create((observer) => {
-          this.socket.on('room-event', (data) => {
-              observer.next(data);
-          });
+    return Observable.create((observer) => {
+      this.socket.on('room-event', (data) => {
+        observer.next(data);
       });
+    });
   }
 
   public createRoom = (room) => {
-      this.socket.emit('create-room', room);
+    this.socket.emit('create-room', room);
   }
 
   public join = (room) => {
