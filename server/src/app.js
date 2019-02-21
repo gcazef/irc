@@ -8,6 +8,7 @@ const corsOptions = {
 var bodyParser = require('body-parser')
 cors({credentials: true, origin: true})
 
+
 // App setup
 
 var app = express();
@@ -45,3 +46,7 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("typing", data);
     });
 });
+
+var Users = require ('../routes/Users')
+
+app.use('../users', Users)

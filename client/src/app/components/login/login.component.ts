@@ -8,7 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  private name: string;
+  credentials: TokenPayload = {
+    id: 0,
+    nickname: '',
+    login: '',
+    password: ''
+  }
 
   credentials: TokenPayload = {
     id: 0,
