@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, TokenPayload } from 'src/app/authentication.service'
-import { Router } from '@angular/router';
+import { Router } from '@angular/router'
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   private name: string;
 
   credentials: TokenPayload = {
@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
-    this.auth.login(this.credentials).subscribe(
+  register() {
+    this.auth.register(this.credentials).subscribe(
       () => {
         this.router.navigateByUrl('/home')
       },
@@ -31,9 +31,5 @@ export class LoginComponent implements OnInit {
         console.error(err)
       }
     )
-  }
-
-  redirect() {
-    this.router.navigate(['/home']);
   }
 }

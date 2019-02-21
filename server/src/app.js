@@ -1,12 +1,27 @@
 var express = require('express');
 var socket = require('socket.io');
+var cors = require('cors');
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200
+  };
+var bodyParser = require('body-parser')
+cors({credentials: true, origin: true})
 
 // App setup
+
 var app = express();
+app.use(bodyParser.json())
+app.use(cors(corsOptions))
+app.use(bodyParser.urlencoded({ extended: false }))
+var Users = require("../routes/Users")
+app.use("/", Users);
 var server = app.listen(5000, () => {
     console.log("Listening on port 5000");
 });
 
+//app.post('/register', Users);
+//app.post('/login', Users);
 // Static files
 // app.use(express.static("public"));
 
