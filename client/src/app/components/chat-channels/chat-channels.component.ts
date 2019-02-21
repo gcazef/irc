@@ -8,7 +8,8 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./chat-channels.component.scss']
 })
 export class ChatChannelsComponent implements OnInit {
-  room: string = "";
+  currRoom: string = "";
+  newRoom: string = "";
   rooms: string[] = [];
   joinedRooms: string[] = [];
 
@@ -27,13 +28,13 @@ export class ChatChannelsComponent implements OnInit {
   }
 
   createRoom() {
-    if (this.room.length > 0 && this.room.length < 25 && this.room.match("^[A-z0-9]+$")) {
-      this.room = "#" + this.room;
-      if (!this.rooms.includes(this.room)) {
-        this.chatService.createRoom(this.room);
-        this.rooms.push(this.room);
+    if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0-9]+$")) {
+      this.newRoom = "#" + this.newRoom;
+      if (!this.rooms.includes(this.newRoom)) {
+        this.chatService.createRoom(this.newRoom);
+        this.rooms.push(this.newRoom);
       }
-      this.room = "";
+      this.newRoom = "";
     }
   }
 
@@ -42,7 +43,7 @@ export class ChatChannelsComponent implements OnInit {
       this.joinedRooms.push(room);
     this.chatService.join(room);
     this.roomService.switchRoom(room);
-    this.room = room;
+    this.currRoom = room;
   }
 
   leave(room: string) {
@@ -53,10 +54,10 @@ export class ChatChannelsComponent implements OnInit {
       this.joinedRooms.splice(idx, 1);
       if (this.joinedRooms.length > 0) {
         this.roomService.switchRoom(this.joinedRooms[this.joinedRooms.length - 1]);
-        this.room = this.joinedRooms[this.joinedRooms.length - 1];
+        this.currRoom = this.joinedRooms[this.joinedRooms.length - 1];
       } else {
         this.roomService.switchRoom("");
-        this.room = "";
+        this.currRoom = "";
       }
     }
   }

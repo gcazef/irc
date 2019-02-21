@@ -10,6 +10,7 @@ export class ChatService {
   private socket;
 
   constructor() {
+    //erreurs
     this.socket = io(this.url);
   }
 
@@ -48,4 +49,6 @@ export class ChatService {
   public leave = (room) => {
     this.socket.emit('leave', room);
   }
+
+  //event error
 }
