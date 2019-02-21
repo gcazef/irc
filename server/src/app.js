@@ -1,5 +1,5 @@
-var express = require('express');
-var socket = require('socket.io');
+var express = require("express");
+var socket = require("socket.io");
 
 // App setup
 var app = express();
@@ -12,6 +12,10 @@ var io = socket(server);
 
 // Listen to connection event
 io.on("connection", (socket) => {
+    module.exports = {
+        io: io,
+        socket: socket
+    };
     var joinedRooms = [];
     var uname = "";
 
@@ -25,7 +29,7 @@ io.on("connection", (socket) => {
         };
 
         io.in(room).emit("room-event", data);
-    }
+    };
 
     socket.on("change-uname", (name) => {
         uname = name;
@@ -39,7 +43,7 @@ io.on("connection", (socket) => {
             room: room,
             date: date.toLocaleString(),
             content: content
-        }
+        };
         io.in(room).emit("chat-message", data);
         console.log("emitted");
     });

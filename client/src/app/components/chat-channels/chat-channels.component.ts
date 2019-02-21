@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-channels',
@@ -8,10 +9,12 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./chat-channels.component.scss']
 })
 export class ChatChannelsComponent implements OnInit {
-  currRoom: string = "";
-  newRoom: string = "";
-  rooms: string[] = [];
-  joinedRooms: string[] = [];
+  private currRoom = "";
+  private newRoom = "";
+  private rooms: string[] = [];
+  private joinedRooms: string[] = [];
+  private chatSub: Subscription;
+  private roomSub: Subscription;
 
   constructor(
     private chatService: ChatService,
@@ -19,15 +22,20 @@ export class ChatChannelsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.chatService
+    this.chatSub = this.chatService
       .getRoomEvent()
       .subscribe((event) => {
-        if (event.type == "new" && !(this.rooms.includes(event.room)))
+        if (event.type === "new" && !(this.rooms.includes(event.room))) {
           this.rooms.push(event.room);
+        }
       });
   }
 
-  createRoom() {
+  ngOnDestroy() {
+    this.chatSub.unsubscribe();
+  }
+
+  public createRoom() {
     if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0-9]+$")) {
       this.newRoom = "#" + this.newRoom;
       if (!this.rooms.includes(this.newRoom)) {
@@ -38,18 +46,19 @@ export class ChatChannelsComponent implements OnInit {
     }
   }
 
-  join(room: string) {
-    if (!this.joinedRooms.includes(room))
+  public join(room: string) {
+    if (!this.joinedRooms.includes(room)) {
       this.joinedRooms.push(room);
+    }
     this.chatService.join(room);
     this.roomService.switchRoom(room);
     this.currRoom = room;
   }
 
-  leave(room: string) {
-    var idx = this.joinedRooms.indexOf(room);
+  public leave(room: string) {
+    const idx = this.joinedRooms.indexOf(room);
 
-    if (idx != -1) {
+    if (idx !== -1) {
       this.chatService.leave(room);
       this.joinedRooms.splice(idx, 1);
       if (this.joinedRooms.length > 0) {
@@ -62,7 +71,7 @@ export class ChatChannelsComponent implements OnInit {
     }
   }
 
-  //edit(room: string, name: string)
+  // edit(room: string, name: string)
 
-  //delete(room: string)
+  // delete(room: string)
 }

@@ -12,5 +12,8 @@
     "express": "^4.16.4",
     "socket.io": "^2.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-strongloop": "^2.1.0"
+  }
 }

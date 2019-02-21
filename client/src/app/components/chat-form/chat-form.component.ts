@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-form',
@@ -8,8 +9,9 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./chat-form.component.scss']
 })
 export class ChatFormComponent implements OnInit {
-  message: string = "";
-  room: string = "";
+  private message = "";
+  private room = "";
+  private roomSub: Subscription;
 
   constructor(
     private chatService: ChatService,
@@ -17,15 +19,19 @@ export class ChatFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.roomService
+    this.roomSub = this.roomService
       .roomChange
       .subscribe((room) => {
         this.room = room;
       });
   }
 
-  sendMessage() {
-    if (this.room != "") {
+  ngOnDestroy() {
+    this.roomSub.unsubscribe();
+  }
+
+  public sendMessage() {
+    if (this.room !== "") {
       this.chatService.sendMessage(this.message, this.room);
       this.message = "";
     }
