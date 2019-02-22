@@ -19,14 +19,26 @@ export class ChatService {
     this.socket.emit("change-uname", name);
   }
 
-  public sendMessage(message, room) {
+  public getAllRooms() {
+    this.socket.emit("get-rooms");
+  }
+
+  public sendMessage(message: string, room: string) {
     this.socket.emit('chat-message', message, room);
   }
 
   public getMessages = () => {
     return Observable.create((observer) => {
-      this.socket.on('chat-message', (message) => {
+      this.socket.on('chat-message', (message: string) => {
         observer.next(message);
+      });
+    });
+  }
+
+  public roomsList = () => {
+    return Observable.create((observer) => {
+      this.socket.on("rooms-list", (channels) => {
+        observer.next(channels);
       });
     });
   }
@@ -39,15 +51,15 @@ export class ChatService {
     });
   }
 
-  public createRoom = (room) => {
+  public createRoom = (room: string) => {
     this.socket.emit('create-room', room);
   }
 
-  public join = (room) => {
+  public join = (room: string) => {
     this.socket.emit('join', room);
   }
 
-  public leave = (room) => {
+  public leave = (room: string) => {
     this.socket.emit('leave', room);
   }
 

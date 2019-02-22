@@ -29,6 +29,17 @@ export class ChatChannelsComponent implements OnInit {
           this.rooms.push(event.room);
         }
       });
+
+    this.roomSub = this.chatService
+      .roomsList()
+      .subscribe((rooms) => {
+        this.rooms = [];
+        rooms.forEach(r => {
+          this.rooms.push(r.name);
+        });
+      });
+    
+    this.chatService.getAllRooms();
   }
 
   ngOnDestroy() {

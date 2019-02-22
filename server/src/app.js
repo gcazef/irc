@@ -5,6 +5,8 @@ var bodyParser = require("body-parser");
 
 var Users = require("../routes/Users");
 
+var Channel = require("../models/Channel");
+
 const corsOptions = {
     origin: "http://localhost:4200",
     optionsSuccessStatus: 200
@@ -30,8 +32,6 @@ io.on("connection", (socket) => {
     var joinedRooms = [];
     var uname = "";
 
-    console.log("New socket connection:", socket.id);
-
     var sendRoomEvent = (type, room, msg) => {
         var data = {
             type: type,
@@ -43,6 +43,14 @@ io.on("connection", (socket) => {
 
     socket.on("change-uname", (name) => {
         uname = name;
+    });
+
+    socket.on("get-rooms", () => {
+        Channel.findAll({
+            attributes: ["name"]
+        }).then(channels => {
+            socket.emit("rooms-list", channels);
+        })
     });
 
     // Listen to the chat message
@@ -94,6 +102,10 @@ io.on("connection", (socket) => {
             message: ""
         };
 
+        Channel.create({name: channel})
+            .catch(err => {
+                console.log(err);
+            });
         io.emit("room-event", data);
     });
 });
