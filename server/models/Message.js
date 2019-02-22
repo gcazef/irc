@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../database/db.js");
+const User = require("./User");
+const Channel = require("./Channel");
 
 module.exports = db.sequelize.define(
     "Message",

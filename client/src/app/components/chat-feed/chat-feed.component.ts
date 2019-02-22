@@ -23,7 +23,7 @@ export class ChatFeedComponent implements OnInit {
 
   ngOnInit() {
     this.chatSub = this.chatService
-      .getMessages()
+      .getMessage()
       .subscribe((data) => {
         if (data.room === this.room) {
           this.messages.push(data);
@@ -35,14 +35,18 @@ export class ChatFeedComponent implements OnInit {
       .getRoomEvent()
       .subscribe((event) => {
         this.roomMsg = event.message;
+        if (this.roomMsg == "join") {
+          this.messages = [];
+          event.content.forEach(msg => {
+            this.messages.push(msg);
+          });
+        }
       });
 
     this.roomSub = this.roomService
       .roomChange
       .subscribe((room: string) => {
         this.room = room;
-        this.messages = [];
-        // get messages from chat service
       });
   }
 
