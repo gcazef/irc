@@ -1,0 +1,26 @@
+CREATE TABLE `Message` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`content` TEXT NOT NULL,
+	`date` DATETIME NOT NULL,
+	`user` INT NOT NULL,
+	`channel` INT NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `User` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(21) NOT NULL UNIQUE,
+	`pwdhash` VARCHAR(200) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Channel` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(21) NOT NULL UNIQUE,
+	PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk0` FOREIGN KEY (`user`) REFERENCES `User`(`id`);
+
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk1` FOREIGN KEY (`channel`) REFERENCES `Channel`(`id`);
+
