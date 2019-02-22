@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
+
 users.use(cors());
 
 process.env.SECRET_KEY = "secret";
@@ -52,7 +53,7 @@ users.post("/login", (req, res) => {
     })
         .then(user => {
             var passwordIsValid = bcrypt.compareSync(user.pwdhash, req.body.pwdhash);
-
+            console.log("fdp");
             if(!passwordIsValid) {
                 let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                     expiresIn: 1440

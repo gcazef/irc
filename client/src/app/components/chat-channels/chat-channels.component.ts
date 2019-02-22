@@ -36,7 +36,7 @@ export class ChatChannelsComponent implements OnInit {
   }
 
   public createRoom() {
-    if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0-9]+$")) {
+    if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0\-9-éè]+$")) {
       this.newRoom = "#" + this.newRoom;
       if (!this.rooms.includes(this.newRoom)) {
         this.chatService.createRoom(this.newRoom);

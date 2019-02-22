@@ -12,11 +12,8 @@ import { ChatFormComponent } from './components/chat-form/chat-form.component';
 import { ChatMembersComponent } from './components/chat-members/chat-members.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LoginComponent } from './components/login/login.component';
-//import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import { AuthenticationService } from './authentication.service';
-import { AuthGuardService } from './auth-guard.service';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

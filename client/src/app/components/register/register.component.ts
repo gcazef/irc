@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, TokenPayload } from 'src/app/authentication.service'
+import { AuthenticationService, TokenPayload } from 'src/app/services/authentication.service'
 import { Router } from '@angular/router'
 
 @Component({
@@ -23,10 +23,10 @@ export class RegisterComponent implements OnInit {
   register() {
     this.auth.register(this.credentials).subscribe(
       () => {
-        this.router.navigateByUrl('/home')
+        this.router.navigateByUrl('/login');
       },
       err => {
-        console.error(err)
+        console.error(err);
       }
     )
   }
