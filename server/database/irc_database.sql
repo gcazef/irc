@@ -20,7 +20,7 @@ CREATE TABLE `Channel` (
 	PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `Message` ADD CONSTRAINT `Message_fk0` FOREIGN KEY (`user`) REFERENCES `User`(`id`);
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk0` FOREIGN KEY (`user`) REFERENCES `User`(`id`) ON DELETE CASCADE;
 
-ALTER TABLE `Message` ADD CONSTRAINT `Message_fk1` FOREIGN KEY (`channel`) REFERENCES `Channel`(`id`);
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk1` FOREIGN KEY (`channel`) REFERENCES `Channel`(`id`) ON DELETE CASCADE;
 

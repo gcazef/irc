@@ -10,10 +10,8 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class LoginComponent implements OnInit {
   credentials: TokenPayload = {
-    id: 0,
-    nickname: '',
-    login: '',
-    password: ''
+    name: '',
+    pwdhash: ''
   }
 
   constructor(private auth: AuthenticationService, private router: Router) { }

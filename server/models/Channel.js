@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../database/db.js");
 
 module.exports = db.sequelize.define(
-    "User",
+    "Channel",
     {
         id: {
             type: Sequelize.INTEGER,
@@ -14,10 +14,6 @@ module.exports = db.sequelize.define(
             type: Sequelize.STRING(21),
             allowNull: false,
             unique: true
-        },
-        pwdhash: {
-            type: Sequelize.STRING(200),
-            allowNull: false
         }
     },
     {

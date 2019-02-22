@@ -11,10 +11,8 @@ export class RegisterComponent implements OnInit {
   private name: string;
 
   credentials: TokenPayload = {
-    id: 0,
-    nickname: '',
-    login: '',
-    password: ''
+    name: '',
+    pwdhash: ''
   }
 
   constructor(private auth: AuthenticationService, private router: Router) { }
