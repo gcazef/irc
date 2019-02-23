@@ -5,6 +5,19 @@ body {
     width: 100vw;
     margin: 0;
     padding: 0;
+}
+
+body * {
     color: #494949;
     font-family: Montserrat, sans-serif;
+}
+
+#main-nav {
+    background-color: #f4f3f3;
+    height: 8%;
+}
+
+h1 a {
+    color: #494949;
+    text-decoration: none;
 }

@@ -13,6 +13,7 @@ var Channel = require("../models/Channel");
 var Message = require("../models/Message");
 var db = require("../database/db");
 
+// Change force: true not to drop db everytime
 db.sequelize.sync({force: true});
 
 const corsOptions = {
