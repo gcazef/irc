@@ -25,7 +25,7 @@ export class ChatFeedComponent implements OnInit {
     this.chatSub = this.chatService
       .getMessage()
       .subscribe((data) => {
-        if (data.room === this.room) {
+        if (data.channel === this.room) {
           this.messages.push(data);
           this.roomMsg = "";
         }
@@ -35,18 +35,21 @@ export class ChatFeedComponent implements OnInit {
       .getRoomEvent()
       .subscribe((event) => {
         this.roomMsg = event.message;
-        if (this.roomMsg == "join") {
-          this.messages = [];
-          event.content.forEach(msg => {
-            this.messages.push(msg);
-          });
-        }
       });
 
     this.roomSub = this.roomService
       .roomChange
-      .subscribe((room: string) => {
-        this.room = room;
+      .subscribe((data) => {
+        this.roomMsg = "";
+        if (data.channel === null) {
+          this.room = "";
+          this.messages = [];
+        } else {
+          this.room = data.channel;
+          data.messages.forEach(msg => {
+            this.messages.push(msg);
+          });
+        }
       });
   }
 

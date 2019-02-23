@@ -1,9 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../database/db.js");
-const User = require("./User");
-const Channel = require("./Channel");
 
-module.exports = db.sequelize.define(
+const Message = db.sequelize.define(
     "Message",
     {
         id: {
@@ -18,23 +16,26 @@ module.exports = db.sequelize.define(
         },
         date: {
             type: Sequelize.DATE
-        },
-        user: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: User,
-                key: 'id'
-            }
-        },
-        channel: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: Channel,
-                key: 'id'
-            }
         }
+        // user: {
+        //     type: Sequelize.STRING(21),
+        //     references: {
+        //         model: User,
+        //         key: 'name'
+        //     }
+        // },
+        // channel: {
+        //     type: Sequelize.STRING(21),
+        //     references: {
+        //         model: Channel,
+        //         key: 'name'
+        //     }
+        // }
     },
     {
+        timestamps: false,        
         freezeTableName: true
     }
 );
+
+module.exports = Message;

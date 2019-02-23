@@ -7,7 +7,7 @@ export class RoomService {
 
   @Output() roomChange: EventEmitter<string> = new EventEmitter();
 
-  public switchRoom(room: string) {
-    this.roomChange.emit(room);
+  public switchRoom(data) {
+    this.roomChange.emit(data);
   }
 }

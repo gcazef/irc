@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../database/db.js");
+const Message = require("./Message");
 
-module.exports = db.sequelize.define(
+const User = db.sequelize.define(
     "User",
     {
         id: {
@@ -22,6 +23,11 @@ module.exports = db.sequelize.define(
     },
     {
         timestamps: false,
-        freezeTableName: true,
+        freezeTableName: true
     }
 );
+
+Message.belongsTo(User, {foreignKey: 'user', onDelete: 'cascade'});
+// User.hasMany(Message);
+
+module.exports = User;

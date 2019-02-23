@@ -4,11 +4,16 @@ var socket = require("socket.io");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 
-// Models
+// Routes
 var Users = require("../routes/Users");
+
+// Models
 var User = require("../models/User");
 var Channel = require("../models/Channel");
 var Message = require("../models/Message");
+var db = require("../database/db");
+
+db.sequelize.sync({force: true});
 
 const corsOptions = {
     origin: "http://localhost:4200",
@@ -36,49 +41,27 @@ io.on("connection", (socket) => {
 
     console.log('new connection');
 
-    var sendRoomEvent = (type, room, msg, content) => {
-        var data = {
+    var sendRoomEvent = (type, message, data) => {
+        var event = {
             type: type,
-            room: room,
-            message: msg,
-            content: content
+            message: message,
+            data: data
         };
-        io.in(room).emit("room-event", data);
-    };
-
-    var sendMessages = (roomId, room) => {
-        Message.findAll({
-            where: {
-                channel: roomId
-            }
-        }).then(messages => {
-            var msg = data.name + " joined channel " + data.room;
-            sendRoomEvent("join", room, msg, messages);
-        }).catch(err => {
-            console.log(err);
-        });
-    };
-
-    var saveMessage = (roomId, data) => {
-        User.findAll({
-            attributes: ["id"],
-            where: {
-                name: data.user
-            }
-        }).then(user => {
-            Message.create({
-                content: data.content,
-                date: data.date,
-                user: user[0].id,
-                channel: roomId
-            }).catch(err => {
-                console.log(err);
-            });
-        }).catch(err => {
-            console.log(err);
-        });
         
-    }
+        if (type === "new") {
+            io.emit("room-event", event);
+        } else {
+            io.in(data.channel).emit("room-event", event);
+        }
+    };
+
+    var sendUserEvent = (type, data) => {
+        var event = {
+            type: type,
+            data: data
+        };
+        socket.emit("user-event", event);
+    };
 
     // User events
     socket.on("change-uname", (name) => {
@@ -87,27 +70,35 @@ io.on("connection", (socket) => {
 
     // Chat events
     socket.on("chat-message", (content, room) => {
-        var date = new Date(Date.now());
-        var data = {
-            user: uname,
-            room: room,
-            date: date.toLocaleString(),
-            content: content
-        };
-        Channel.findAll({
-                attributes: ["id"],
-                where: {
-                    name: room
-                }
-            }).then(chan => {
-                    saveMessage(chan[0].id, data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+        var date = new Date();
 
-        io.in(room).emit("chat-message", data);
-        console.log("emitted");
+        User.findAll({
+            where: { name: uname }
+        }).then(users => {
+            Channel.findAll({
+                where: { name: room }
+            }).then(channels => {
+                return {user: users[0], channel: channels[0]};
+            }).then(data => {
+                Message.create({
+                    content: content,
+                    date: date,
+                    user: data.user.id,
+                    channel: data.channel.id
+                }).then(message => {
+                    console.log(message);
+                    console.log( content + uname  + room + date);
+                    io.in(room).emit("chat-message", { content: content, 
+                                                        date: date,
+                                                        user: uname,
+                                                        channel: room});
+                }).catch(err => {
+                    console.log("CHAT" + err);
+                });
+            });
+        }).catch(err => {
+            console.log("CHAT: " + err);
+        });
     });
 
     // Room events
@@ -115,7 +106,7 @@ io.on("connection", (socket) => {
         Channel.findAll({
             attributes: ["name"]
         }).then(channels => {
-            socket.emit("rooms-list", channels);
+            socket.emit("get-rooms", channels);
         })
     });
 
@@ -123,52 +114,47 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("typing", name);
     });
 
+    socket.on("create-room", (channel) => {
+        console.log("new room");
+
+        Channel.create({name: channel.valueOf()})
+            .then(chan => {
+                sendRoomEvent("new", "channel created", {channel: chan.name});
+            }).catch(err => {
+                console.log("CREATE" + err);
+            });
+    });
+
+    // delete
+    // edit
+
     socket.on("join", (channel) => {
         if (!joinedRooms.includes(channel)) {
-            
-            Channel.findAll({
-                attributes: ["id"],
-                where: {
-                    name: channel
-                }
-            }).then(chan => {
-                    sendMessages(chan[0].id, channel);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-
-            socket.join(channel);
-            joinedRooms.push(channel);
-            console.log("joined rooms", joinedRooms);
+            Message.findAll({
+                include: [{
+                    model: Channel,
+                    where: { name: channel }
+                }]
+            }).then(messages => {
+                var msg = uname + " joined room " + channel;
+                sendRoomEvent("join", msg, {channel: channel});
+                sendUserEvent("join", {channel: channel, messages: messages});
+                socket.join(channel);
+                joinedRooms.push(channel);
+            }).catch(err => {
+                console.log("JOIN" + err);
+            });
         }
     });
 
     socket.on("leave", (channel) => {
         var roomIdx = joinedRooms.indexOf(channel);
+        var msg = uname + " left channel " + channel;
 
         if (roomIdx != -1) {
-            var msg = uname + " left channel " + channel;
-
+            sendRoomEvent("leave", msg, {channel: channel});
             socket.leave(channel);
             joinedRooms.splice(roomIdx, 1);
-            sendRoomEvent("leave", channel, msg, []);
-            console.log("left room", channel);
         }
-    });
-
-    socket.on("create-room", (channel) => {
-        console.log("new room");
-        var data = {
-            type: "new",
-            room: channel,
-            message: ""
-        };
-
-        Channel.create({name: channel})
-            .catch(err => {
-                console.log(err);
-            });
-        io.emit("room-event", data);
     });
 });

@@ -21,8 +21,8 @@ export class ChatFormComponent implements OnInit {
   ngOnInit() {
     this.roomSub = this.roomService
       .roomChange
-      .subscribe((room) => {
-        this.room = room;
+      .subscribe((data) => {
+        this.room = data.channel;
       });
   }
 

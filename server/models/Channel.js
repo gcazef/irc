@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../database/db.js");
+const Message = require("./Message");
 
-module.exports = db.sequelize.define(
+const Channel = db.sequelize.define(
     "Channel",
     {
         id: {
@@ -18,6 +19,11 @@ module.exports = db.sequelize.define(
     },
     {
         timestamps: false,
-        freezeTableName: true,
+        freezeTableName: true
     }
 );
+
+Message.belongsTo(Channel, {foreignKey: 'channel', onDelete: 'cascade'});
+// Channel.hasMany(Message);
+
+module.exports = Channel;

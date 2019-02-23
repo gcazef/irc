@@ -11,57 +11,69 @@ export class ChatService {
   private socket;
 
   constructor() {
-    //erreurs
     this.socket = io(this.url);
   }
 
+  // User
   public changeName(name: string) {
     this.socket.emit("change-uname", name);
   }
 
-  public getAllRooms() {
-    this.socket.emit("get-rooms");
-  }
-
+  // Chat
   public sendMessage(message: string, room: string) {
-    this.socket.emit('chat-message', message, room);
+    this.socket.emit("chat-message", message, room);
   }
 
   public getMessage = () => {
     return Observable.create((observer) => {
-      this.socket.on('chat-message', (message: string) => {
+      this.socket.on("chat-message", (message) => {
         observer.next(message);
       });
     });
   }
 
+  // Rooms
+  public getAllRooms() {
+    this.socket.emit("get-rooms");
+  }
+
   public roomsList = () => {
     return Observable.create((observer) => {
-      this.socket.on("rooms-list", (channels) => {
+      this.socket.on("get-rooms", (channels) => {
         observer.next(channels);
       });
     });
   }
 
+  public createRoom = (room: string) => {
+    this.socket.emit("create-room", room);
+  }
+
+  // edit
+
+  // delete
+
   public getRoomEvent = () => {
     return Observable.create((observer) => {
-      this.socket.on('room-event', (data) => {
-        observer.next(data);
+      this.socket.on("room-event", (event) => {
+        observer.next(event);
       });
     });
   }
 
-  public createRoom = (room: string) => {
-    this.socket.emit('create-room', room);
-  }
-
   public join = (room: string) => {
-    this.socket.emit('join', room);
+    this.socket.emit("join", room);
   }
 
   public leave = (room: string) => {
-    this.socket.emit('leave', room);
+    this.socket.emit("leave", room);
   }
 
-  //event error
+  public getUserEvent = () => {
+    return Observable.create((observer) => {
+      this.socket.on("user-event", (event) => {
+        observer.next(event);
+      });
+    });
+  }
 }

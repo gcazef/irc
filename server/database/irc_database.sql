@@ -2,8 +2,8 @@ CREATE TABLE `Message` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`content` TEXT NOT NULL,
 	`date` DATETIME NOT NULL,
-	`user` INT NOT NULL,
-	`channel` INT NOT NULL,
+	`user` VARCHAR(21) NOT NULL,
+	`channel` VARCHAR(21) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -20,7 +20,7 @@ CREATE TABLE `Channel` (
 	PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `Message` ADD CONSTRAINT `Message_fk0` FOREIGN KEY (`user`) REFERENCES `User`(`id`) ON DELETE CASCADE;
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk0` FOREIGN KEY (`user`) REFERENCES `User`(`name`) ON DELETE CASCADE;
 
-ALTER TABLE `Message` ADD CONSTRAINT `Message_fk1` FOREIGN KEY (`channel`) REFERENCES `Channel`(`id`) ON DELETE CASCADE;
+ALTER TABLE `Message` ADD CONSTRAINT `Message_fk1` FOREIGN KEY (`channel`) REFERENCES `Channel`(`name`) ON DELETE CASCADE;
 

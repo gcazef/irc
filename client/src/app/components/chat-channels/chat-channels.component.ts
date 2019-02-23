@@ -14,6 +14,7 @@ export class ChatChannelsComponent implements OnInit {
   private rooms: string[] = [];
   private joinedRooms: string[] = [];
   private chatSub: Subscription;
+  private userSub: Subscription;
   private roomSub: Subscription;
 
   constructor(
@@ -25,8 +26,17 @@ export class ChatChannelsComponent implements OnInit {
     this.chatSub = this.chatService
       .getRoomEvent()
       .subscribe((event) => {
-        if (event.type === "new" && !(this.rooms.includes(event.room))) {
-          this.rooms.push(event.room);
+        var chan = event.data.channel;
+        if (event.type === "new" && !(this.rooms.includes(chan))) {
+          this.rooms.push(chan);
+        }
+      });
+
+    this.userSub = this.chatService
+      .getUserEvent()
+      .subscribe((event) => {
+        if (event.type === "join") {
+          this.roomService.switchRoom(event.data);
         }
       });
 
@@ -44,6 +54,8 @@ export class ChatChannelsComponent implements OnInit {
 
   ngOnDestroy() {
     this.chatSub.unsubscribe();
+    this.userSub.unsubscribe();
+    this.roomSub.unsubscribe();
   }
 
   public createRoom() {
@@ -51,7 +63,6 @@ export class ChatChannelsComponent implements OnInit {
       this.newRoom = "#" + this.newRoom;
       if (!this.rooms.includes(this.newRoom)) {
         this.chatService.createRoom(this.newRoom);
-        this.rooms.push(this.newRoom);
       }
       this.newRoom = "";
     }
@@ -59,11 +70,10 @@ export class ChatChannelsComponent implements OnInit {
 
   public join(room: string) {
     if (!this.joinedRooms.includes(room)) {
+      this.chatService.join(room);
       this.joinedRooms.push(room);
+      this.currRoom = room;
     }
-    this.chatService.join(room);
-    this.roomService.switchRoom(room);
-    this.currRoom = room;
   }
 
   public leave(room: string) {
@@ -72,11 +82,8 @@ export class ChatChannelsComponent implements OnInit {
     if (idx !== -1) {
       this.chatService.leave(room);
       this.joinedRooms.splice(idx, 1);
-      if (this.joinedRooms.length > 0) {
-        this.roomService.switchRoom(this.joinedRooms[this.joinedRooms.length - 1]);
-        this.currRoom = this.joinedRooms[this.joinedRooms.length - 1];
-      } else {
-        this.roomService.switchRoom("");
+      if (room === this.currRoom) {
+        this.roomService.switchRoom({channel: null});
         this.currRoom = "";
       }
     }
