@@ -7,21 +7,23 @@
       </div>
     </div>
     <div *ngFor="let room of rooms" class="input-group m-1 all-width">
-      <div class="input-group-append igroup all-width">
-        <div class="button-group">
-          <button class="btn channel-menu" (click)="join(room)">
-            <span *ngIf="joinedRooms.includes(room)">
-              <img src="assets/green-dot.png" class="co-dot">
-            </span>
-            <span *ngIf="!joinedRooms.includes(room)">
-              <img src="assets/red-dot.png" class="co-dot">
-            </span>
-            {{room}}
-          </button>
+      <div [className]="room == currRoom ? 'selected' : 'unselected'">
+        <div class="input-group-append igroup">
+          <div class="button-group">
+            <button class="btn channel-menu" (click)="join(room)">
+              <span *ngIf="joinedRooms.includes(room)">
+                <img src="assets/green-dot.png" class="co-dot">
+              </span>
+              <span *ngIf="!joinedRooms.includes(room)">
+                <img src="assets/red-dot.png" class="co-dot">
+              </span>
+              {{room}}
+            </button>
+          </div>
+          <button class="btn channel-menu channel-button" (click)="openDialog(room)"><img src="assets/pencil.png" class="channel-img"></button>
+          <button class="btn channel-menu channel-button" (click)="leave(room)"><img src="assets/leave.png" class="channel-img"></button>
+          <button class="btn channel-menu channel-button" (click)="deleteRoom(room)"><img src="assets/delete.png" class="channel-img"></button>
         </div>
-        <button class="btn channel-menu channel-button" (click)="openDialog(room)"><img src="assets/pencil.png" class="channel-img"></button>
-        <button class="btn channel-menu channel-button" (click)="leave(room)"><img src="assets/leave.png" class="channel-img"></button>
-        <button class="btn channel-menu channel-button" (click)="delete(room)"><img src="assets/delete.png" class="channel-img"></button>
       </div>
     </div>
   </div>

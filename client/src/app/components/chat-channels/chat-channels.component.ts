@@ -31,6 +31,7 @@ export class ChatChannelsComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {oldRoom: room};
+    dialogConfig.hasBackdrop = true;
     
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
@@ -75,7 +76,7 @@ export class ChatChannelsComponent implements OnInit {
   }
 
   public createRoom() {
-    if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0\-9-éè]+$")) {
+    if (this.newRoom.length > 0 && this.newRoom.length < 25 && this.newRoom.match("^[A-z0-9\-éè]+$")) {
       this.newRoom = "#" + this.newRoom;
       if (!this.rooms.includes(this.newRoom)) {
         this.chatService.createRoom(this.newRoom);

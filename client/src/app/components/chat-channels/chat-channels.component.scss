@@ -1,6 +1,14 @@
 .channel-menu {
-    background-color: #dfdfdf;
     height: 100%;
+    background-color: #dfdfdf;
+}
+
+.selected * {
+    background-color: #a3a3a3;
+}
+
+.unselected * {
+    background-color: #dfdfdf;
 }
 
 .igroup {

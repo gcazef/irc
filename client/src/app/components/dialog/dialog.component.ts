@@ -39,7 +39,7 @@ export class DialogComponent implements OnInit {
       this.dialogRef.close();
   }
   public editRoom() {
-    if (this.name.length > 0 && this.name.length < 25 && this.name.match("^[A-z0\-9-éè]+$")) {
+    if (this.name.length > 0 && this.name.length < 25 && this.name.match("^[A-z0-9\-éè]+$")) {
       this.name = "#" + this.name;
       this.chatService.editRoom(this.oldRoom, this.name);
       this.chatService.getAllRooms();
