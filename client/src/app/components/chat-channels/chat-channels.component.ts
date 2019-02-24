@@ -70,10 +70,10 @@ export class ChatChannelsComponent implements OnInit {
 
   public join(room: string) {
     if (!this.joinedRooms.includes(room)) {
-      this.chatService.join(room);
       this.joinedRooms.push(room);
-      this.currRoom = room;
     }
+    this.chatService.join(room);
+    this.currRoom = room;
   }
 
   public leave(room: string) {

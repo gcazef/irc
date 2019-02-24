@@ -14,7 +14,7 @@ var Message = require("../models/Message");
 var db = require("../database/db");
 
 // Change force: true not to drop db everytime
-db.sequelize.sync({force: true});
+db.sequelize.sync();
 
 const corsOptions = {
     origin: "http://localhost:4200",
@@ -37,7 +37,6 @@ var server = app.listen(5000, () => {
 var io = socket(server);
 
 io.on("connection", (socket) => {
-    var joinedRooms = [];
     var uname = "";
 
     console.log('new connection');
@@ -64,6 +63,28 @@ io.on("connection", (socket) => {
         socket.emit("user-event", event);
     };
 
+    var getUserName = (users, id) => {
+        users.forEach(user => {
+            if (user.id == id) {
+                return user.name;
+            }
+        });
+    };
+
+    var formatMessages = (messages, users) => {
+        var readables = [];
+
+        messages.forEach(msg => {
+            var readable = {
+                user: getUserName(users, msg.user),
+                content: msg.content,
+                date: msg.date
+            }
+            readables.push(readable);
+        });
+        return readables;
+    };
+
     // User events
     socket.on("change-uname", (name) => {
         uname = name;
@@ -87,8 +108,6 @@ io.on("connection", (socket) => {
                     user: data.user.id,
                     channel: data.channel.id
                 }).then(message => {
-                    console.log(message);
-                    console.log( content + uname  + room + date);
                     io.in(room).emit("chat-message", { content: content, 
                                                         date: date,
                                                         user: uname,
@@ -96,6 +115,8 @@ io.on("connection", (socket) => {
                 }).catch(err => {
                     console.log("CHAT" + err);
                 });
+            }).catch(err => {
+                console.log("CHAT: " + err);
             });
         }).catch(err => {
             console.log("CHAT: " + err);
@@ -129,23 +150,36 @@ io.on("connection", (socket) => {
     // delete
     // edit
 
-    socket.on("join", (channel) => {
-        if (!joinedRooms.includes(channel)) {
-            Message.findAll({
-                include: [{
-                    model: Channel,
-                    where: { name: channel }
-                }]
-            }).then(messages => {
-                var msg = uname + " joined room " + channel;
-                sendRoomEvent("join", msg, {channel: channel});
-                sendUserEvent("join", {channel: channel, messages: messages});
-                socket.join(channel);
-                joinedRooms.push(channel);
+    socket.on("join", (room) => {
+        User.findAll().then(users => {
+            Channel.findAll({
+                where: { name: room }
+            }).then(channels => {
+                return {users: users, channel: channels[0]};
+            }).then(data => {
+                Message.findAll({
+                    where: { channel: data.channel.id }
+                }).then(messages => {
+                    var msg = uname + " joined room " + room;
+                    var readables = formatMessages(messages, data.users);
+
+                    sendRoomEvent("join", msg, {channel: data.channel.name});
+                    sendUserEvent("join", {channel: data.channel.name, messages: readables});
+                    socket.join(data.channel.name);
+                }).catch(err => {
+                    console.log("CHAT" + err);
+                    console.log(err.stack);
+                });
             }).catch(err => {
-                console.log("JOIN" + err);
+                console.log("CHAT: " + err);
+                console.log(err.stack);
+
             });
-        }
+        }).catch(err => {
+            console.log("CHAT: " + err);
+            console.log(err.stack);
+
+        });
     });
 
     socket.on("leave", (channel) => {

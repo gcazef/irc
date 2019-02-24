@@ -46,6 +46,7 @@ export class ChatFeedComponent implements OnInit {
           this.messages = [];
         } else {
           this.room = data.channel;
+          this.messages = [];
           data.messages.forEach(msg => {
             this.messages.push(msg);
           });
