@@ -35,7 +35,7 @@ export class ChatFormComponent implements OnInit {
   }
 
   public sendMessage() {
-    if (this.room !== "") {
+    if (this.room !== "" && this.message !== "" && this.message !== undefined) {
       this.chatService.sendMessage(this.message, this.room);
       this.message = "";
     }
