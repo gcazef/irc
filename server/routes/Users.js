@@ -52,8 +52,9 @@ users.post("/login", (req, res) => {
         }
     })
         .then(user => {
-            var passwordIsValid = bcrypt.compareSync(user.pwdhash, req.body.pwdhash);
-            if(!passwordIsValid) {
+            var passwordIsValid = bcrypt.compareSync(req.body.pwdhash, user.pwdhash);
+
+            if (passwordIsValid) {
                 let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                     expiresIn: 1440
                 });

@@ -12,7 +12,7 @@ import { environment } from "src/environments/environment";
 export class AuthenticationService {
   private token: string;
 
-  constructor(private http:HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   private saveToken(token: string) : void {
     localStorage.setItem('userToken', token);
@@ -29,7 +29,7 @@ export class AuthenticationService {
   public getUserDetails(): UserDetails {
     const token = this.getToken();
     let payload;
-    if(token) {
+    if (token) {
       payload = token.split('.')[1];
       payload = window.atob(payload);
       return JSON.parse(payload);
@@ -40,7 +40,7 @@ export class AuthenticationService {
 
   public isLoggedIn(): boolean {
     const user = this.getUserDetails()
-    if(user) {
+    if (user) {
       return user.exp > Date.now() / 1000;
     } else {
       return false;
@@ -57,7 +57,7 @@ export class AuthenticationService {
     const request = base.pipe(
       map((data: TokenResponse) => {
         if (data.token) {
-          this.saveToken(data.token);
+          this.saveToken(data.token.toString());
         }
         return data;
       })
@@ -68,14 +68,14 @@ export class AuthenticationService {
   public logout(): void {
     this.token = '';
     window.localStorage.removeItem('userToken');
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/login');
   }
 }
 
 export interface UserDetails {
   id: number;
   name: string;
-  password: string;
+  pwdhash: string;
   exp: number;
 }
 

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.credentials).subscribe(
       () => {
         this.chat.changeName(this.credentials.name);
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/');
       },
       err => {
         console.error(err);
@@ -36,6 +36,6 @@ export class LoginComponent implements OnInit {
   }
 
   public redirect() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 }
