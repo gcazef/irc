@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const db = {};
-const sequelize = new Sequelize("ichat", "root", "", {
+const sequelize = new Sequelize("ichat", "root", "password", {
     host: "localhost",
     dialect: "mysql",
 

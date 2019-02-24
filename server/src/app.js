@@ -162,7 +162,27 @@ io.on("connection", (socket) => {
     });
 
     // delete
+    socket.on("delete-room", (channel) => {
+        console.log("delete room");
+
+        Channel.destroy({where: {name: channel.valueOf()}, truncate: false})
+            .then(chan => {
+                sendRoomEvent("delete", "channel deleted", {channel: chan.name});
+            }).catch(err => {
+                console.log("DELETE" + err);
+            });
+    });
+    
     // edit
+    socket.on("update-room", (oldName, newName) => {
+        console.log("update room");
+        Channel.update({name: newName.valueOf()}, {where: {name: oldName.valueOf()}})
+        .then(chan => {
+            sendRoomEvent("update", "channel updated", {channel: chan.name});
+        }).catch(err => {
+            console.log("UPDATE" + err);
+        });
+    });
 
     socket.on("join", (room) => {
         User.findAll().then(users => {
