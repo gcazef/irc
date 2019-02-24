@@ -1,4 +1,4 @@
-<div *ngFor="let message of messages">
+<div *ngFor="let message of messages; let last = last" tabindex="1" #messageDiv>
   <div>
     <span class="msg">
       <strong>
@@ -9,7 +9,7 @@
       [{{message.date}}]
     </span>
   </div>
-  <div class="msg">
+  <div class="msg" id="box">
     {{message.content}}
   </div>
 </div>

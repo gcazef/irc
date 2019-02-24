@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ElementRef, ViewChildren } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
 import { Subscription } from 'rxjs';
@@ -16,11 +16,21 @@ export class ChatFeedComponent implements OnInit {
   private roomEventSub: Subscription;
   private roomSub: Subscription;
 
+  @ViewChildren("messageDiv") messageDiv: QueryList<ElementRef>
+
   constructor(
     private chatService: ChatService,
     private roomService: RoomService,
     private notifier: NotifierService
   ) {  }
+
+  ngAfterViewInit() {
+    this.messageDiv.changes.subscribe(() => {
+      if (this.messageDiv && this.messageDiv.last) {
+        this.messageDiv.last.nativeElement.focus();
+      }
+    });
+  }
 
   ngOnInit() {
     this.chatSub = this.chatService
@@ -50,9 +60,7 @@ export class ChatFeedComponent implements OnInit {
           this.messages = [];
         } else {
           this.room = data.channel;
-          this.messages = [];
           data.messages.forEach(msg => {
-            console.log(msg);
             this.messages.push(msg);
           });
         }
