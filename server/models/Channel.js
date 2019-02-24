@@ -24,6 +24,5 @@ const Channel = db.sequelize.define(
 );
 
 Message.belongsTo(Channel, {foreignKey: 'channel', onDelete: 'cascade'});
-// Channel.hasMany(Message);
 
 module.exports = Channel;

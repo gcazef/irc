@@ -6,18 +6,22 @@
         <button class="btn channel-menu" (click)="createRoom()"><img src="assets/add.png" width="20"></button>
       </div>
     </div>
-    <div *ngFor="let room of rooms" class="input-group m-1">
-      <div class="input-group-append igroup">
-        <div *ngIf="joinedRooms.includes(room)">
-          <img src="assets/green-dot.png" class="co-dot">
+    <div *ngFor="let room of rooms" class="input-group m-1 all-width">
+      <div class="input-group-append igroup all-width">
+        <div class="button-group">
+          <button class="btn channel-menu" (click)="join(room)">
+            <span *ngIf="joinedRooms.includes(room)">
+              <img src="assets/green-dot.png" class="co-dot">
+            </span>
+            <span *ngIf="!joinedRooms.includes(room)">
+              <img src="assets/red-dot.png" class="co-dot">
+            </span>
+            {{room}}
+          </button>
         </div>
-        <div *ngIf="!joinedRooms.includes(room)">
-          <img src="assets/red-dot.png" class="co-dot">
-        </div>
-        <button class="btn channel-menu" (click)="join(room)">{{room}}</button>
-        <button class="btn channel-menu" (click)="edit(room)"><img src="assets/pencil.png" class="channel-button"></button>
-        <button class="btn channel-menu" (click)="leave(room)"><img src="assets/leave.png" class="channel-button"></button>
-        <button class="btn channel-menu" (click)="delete(room)"><img src="assets/delete.png" class="channel-button"></button>
+        <button class="btn channel-menu channel-button" (click)="edit(room)"><img src="assets/pencil.png" class="channel-img"></button>
+        <button class="btn channel-menu channel-button" (click)="leave(room)"><img src="assets/leave.png" class="channel-img"></button>
+        <button class="btn channel-menu channel-button" (click)="delete(room)"><img src="assets/delete.png" class="channel-img"></button>
       </div>
     </div>
   </div>

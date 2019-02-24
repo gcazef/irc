@@ -1,7 +1,8 @@
 <div class="shadow p-3 mb-0 rounded row" id="member-menu">
   <div class="col-12">
-    <p>
-      List of members
-    </p>
+    <h3>Members</h3>
+    <div *ngFor="let mem of members">
+      <p>{{mem}}</p>
+    </div>
   </div>
 </div>

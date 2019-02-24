@@ -19,6 +19,18 @@ export class ChatService {
     this.socket.emit("change-uname", name);
   }
 
+  public getUsers() {
+    this.socket.emit("get-users");
+  }
+
+  public newMembers = () => {
+    return Observable.create((observer) => {
+      this.socket.on("members", (names) => {
+        observer.next(names);
+      });
+    });
+  }
+
   // Chat
   public sendMessage(message: string, room: string) {
     this.socket.emit("chat-message", message, room);

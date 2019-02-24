@@ -39,7 +39,7 @@ export class AuthenticationService {
   }
 
   public isLoggedIn(): boolean {
-    const user = this.getUserDetails()
+    const user = this.getUserDetails();
     if (user) {
       return user.exp > Date.now() / 1000;
     } else {
@@ -58,6 +58,7 @@ export class AuthenticationService {
       map((data: TokenResponse) => {
         if (data.token) {
           this.saveToken(data.token.toString());
+          localStorage.setItem("userName", user.name);
         }
         return data;
       })

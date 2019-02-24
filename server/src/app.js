@@ -64,19 +64,22 @@ io.on("connection", (socket) => {
     };
 
     var getUserName = (users, id) => {
+        var name = "";
         users.forEach(user => {
             if (user.id == id) {
-                return user.name;
+                name = user.name;
             }
         });
+        return name;
     };
 
     var formatMessages = (messages, users) => {
         var readables = [];
 
         messages.forEach(msg => {
+            var userName = getUserName(users, msg.user);
             var readable = {
-                user: getUserName(users, msg.user),
+                user: userName,
                 content: msg.content,
                 date: msg.date
             }
@@ -88,6 +91,17 @@ io.on("connection", (socket) => {
     // User events
     socket.on("change-uname", (name) => {
         uname = name;
+    });
+
+    socket.on("get-users", () => {
+        var members = [];
+
+        User.findAll().then(users => {
+            users.forEach(user => {
+                members.push(user.name);
+            });
+            io.emit("members", members);
+        });
     });
 
     // Chat events
@@ -183,13 +197,9 @@ io.on("connection", (socket) => {
     });
 
     socket.on("leave", (channel) => {
-        var roomIdx = joinedRooms.indexOf(channel);
         var msg = uname + " left channel " + channel;
 
-        if (roomIdx != -1) {
-            sendRoomEvent("leave", msg, {channel: channel});
-            socket.leave(channel);
-            joinedRooms.splice(roomIdx, 1);
-        }
+        sendRoomEvent("leave", msg, {channel: channel});
+        socket.leave(channel);
     });
 });

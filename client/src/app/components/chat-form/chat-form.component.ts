@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-chat-form',
@@ -15,7 +16,8 @@ export class ChatFormComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private auth: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -24,6 +26,8 @@ export class ChatFormComponent implements OnInit {
       .subscribe((data) => {
         this.room = data.channel;
       });
+
+    this.chatService.changeName(localStorage.getItem("userName"));
   }
 
   ngOnDestroy() {

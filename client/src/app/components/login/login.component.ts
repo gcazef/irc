@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.credentials).subscribe(
       () => {
         this.chat.changeName(this.credentials.name);
+        this.chat.getUsers();
         this.router.navigateByUrl('/');
       },
       err => {

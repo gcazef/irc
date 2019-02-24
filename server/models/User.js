@@ -28,6 +28,5 @@ const User = db.sequelize.define(
 );
 
 Message.belongsTo(User, {foreignKey: 'user', onDelete: 'cascade'});
-// User.hasMany(Message);
 
 module.exports = User;
