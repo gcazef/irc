@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
 import { Subscription } from 'rxjs';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-chat-feed',
@@ -10,7 +11,6 @@ import { Subscription } from 'rxjs';
 })
 export class ChatFeedComponent implements OnInit {
   private messages = [];
-  private roomMsg = "";
   private room = "";
   private chatSub: Subscription;
   private roomEventSub: Subscription;
@@ -18,8 +18,9 @@ export class ChatFeedComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private roomService: RoomService
-  ) { }
+    private roomService: RoomService,
+    private notifier: NotifierService
+  ) {  }
 
   ngOnInit() {
     this.chatSub = this.chatService
@@ -27,20 +28,23 @@ export class ChatFeedComponent implements OnInit {
       .subscribe((data) => {
         if (data.channel === this.room) {
           this.messages.push(data);
-          this.roomMsg = "";
         }
       });
 
     this.roomEventSub = this.chatService
       .getRoomEvent()
       .subscribe((event) => {
-        this.roomMsg = event.message;
+        if (event.type === "join") {
+          this.notifier.notify( 'success', event.message );
+        }
+        else if (event.type === "leave") {
+          this.notifier.notify( 'error', event.message );
+        }
       });
 
     this.roomSub = this.roomService
       .roomChange
       .subscribe((data) => {
-        this.roomMsg = "";
         if (data.channel === null) {
           this.room = "";
           this.messages = [];

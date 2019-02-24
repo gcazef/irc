@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
         if (type === "new") {
             io.emit("room-event", event);
         } else {
-            io.in(data.channel).emit("room-event", event);
+            io.emit("room-event", event);
         }
     };
 

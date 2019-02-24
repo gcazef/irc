@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router'
+import { NotifierModule } from 'angular-notifier';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,7 +40,7 @@ const routes: Routes = [
     LoginComponent,
     HomeComponent,
     RegisterComponent,
-    DialogComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +51,8 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NotifierModule
   ],
   providers: [],
   bootstrap: [AppComponent],
