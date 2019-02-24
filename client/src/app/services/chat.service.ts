@@ -51,7 +51,9 @@ export class ChatService {
 
   // edit
 
-  // delete
+  public deleteRoom = (room: string) => {
+    this.socket.emit("delete-room", room);
+  }
 
   public getRoomEvent = () => {
     return Observable.create((observer) => {

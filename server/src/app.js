@@ -126,6 +126,16 @@ io.on("connection", (socket) => {
     });
 
     // delete
+    socket.on("delete-room", (channel) => {
+        console.log("delete room");
+
+        Channel.destroy({where: {name: channel.valueOf()}, truncate: false})
+            .then(chan => {
+                sendRoomEvent("delete", "channel deleted", {channel: chan.name});
+            }).catch(err => {
+                console.log("DELETE" + err);
+            });
+    });
     // edit
 
     socket.on("join", (channel) => {

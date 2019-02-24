@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { RoomService } from 'src/app/services/room.service';
 import { Subscription } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-chat-channels',
@@ -19,8 +21,18 @@ export class ChatChannelsComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private dialog: MatDialog
   ) { }
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    
+    this.dialog.open(DialogComponent, dialogConfig);
+  }
 
   ngOnInit() {
     this.chatSub = this.chatService
@@ -67,6 +79,15 @@ export class ChatChannelsComponent implements OnInit {
       this.newRoom = "";
     }
   }
+  
+  delete(room: string) {
+    const index: number = this.rooms.indexOf(room);
+    if (index !== -1) {
+      this.chatService.deleteRoom(room);
+      this.rooms.splice(index, 1);
+      this.currRoom = "";
+    }
+  }
 
   public join(room: string) {
     if (!this.joinedRooms.includes(room)) {
@@ -91,5 +112,4 @@ export class ChatChannelsComponent implements OnInit {
 
   // edit(room: string, name: string)
 
-  // delete(room: string)
 }
