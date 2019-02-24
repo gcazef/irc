@@ -15,9 +15,9 @@
           <img src="assets/red-dot.png" class="co-dot">
         </div>
         <button class="btn channel-menu" (click)="join(room)">{{room}}</button>
-        <button class="btn channel-menu" (click)="edit(room)"><img src="assets/pencil.png" class="channel-button"></button>
+        <button class="btn channel-menu" (click)="openDialog(room)"><img src="assets/pencil.png" class="channel-button"></button>
         <button class="btn channel-menu" (click)="leave(room)"><img src="assets/leave.png" class="channel-button"></button>
-        <button class="btn channel-menu" (click)="delete(room)"><img src="assets/delete.png" class="channel-button"></button>
+        <button class="btn channel-menu" (click)="deleteRoom(room)"><img src="assets/delete.png" class="channel-button"></button>
       </div>
     </div>
   </div>

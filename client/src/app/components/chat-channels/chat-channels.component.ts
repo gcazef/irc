@@ -25,13 +25,17 @@ export class ChatChannelsComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
-  openDialog() {
+  openDialog(room: string) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.data = {oldRoom: room};
     
-    this.dialog.open(DialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      data => console.log("Dialog output:", data)
+  );
   }
 
   ngOnInit() {
@@ -80,7 +84,7 @@ export class ChatChannelsComponent implements OnInit {
     }
   }
   
-  delete(room: string) {
+  public deleteRoom(room: string) {
     const index: number = this.rooms.indexOf(room);
     if (index !== -1) {
       this.chatService.deleteRoom(room);

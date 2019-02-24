@@ -50,6 +50,9 @@ export class ChatService {
   }
 
   // edit
+  public editRoom = (oldRoom: string, newRoom: string) => {
+    this.socket.emit("update-room", oldRoom, newRoom);
+  }
 
   public deleteRoom = (room: string) => {
     this.socket.emit("delete-room", room);

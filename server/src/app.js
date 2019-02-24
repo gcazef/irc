@@ -13,8 +13,6 @@ var Channel = require("../models/Channel");
 var Message = require("../models/Message");
 var db = require("../database/db");
 
-db.sequelize.sync({force: true});
-
 const corsOptions = {
     origin: "http://localhost:4200",
     optionsSuccessStatus: 200
@@ -136,7 +134,17 @@ io.on("connection", (socket) => {
                 console.log("DELETE" + err);
             });
     });
+    
     // edit
+    socket.on("update-room", (oldName, newName) => {
+        console.log("update room");
+        Channel.update({name: newName.valueOf()}, {where: {name: oldName.valueOf()}})
+        .then(chan => {
+            sendRoomEvent("update", "channel updated", {channel: chan.name});
+        }).catch(err => {
+            console.log("UPDATE" + err);
+        });
+    });
 
     socket.on("join", (channel) => {
         if (!joinedRooms.includes(channel)) {
